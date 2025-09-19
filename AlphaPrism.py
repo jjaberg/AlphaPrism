@@ -28,7 +28,7 @@ def setup_logger(messages_list):
     )
 
     # File output
-    fh = logging.FileHandler("program.log", mode="a")
+    fh = logging.FileHandler("./logs/program.log", mode="a")
     fh.setFormatter(fmt)
     logger.addHandler(fh)
 
