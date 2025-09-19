@@ -1,0 +1,192 @@
+2025-09-19 21:38:17,529 - INFO       - worker     - Worker thread started.
+2025-09-19 21:38:17,529 - INFO       - counter    - Counter worker started.
+2025-09-19 21:38:17,529 - INFO       - counter    - Counter: 0.1
+2025-09-19 21:38:17,529 - INFO       - hello      - Hello worker started.
+2025-09-19 21:38:17,529 - INFO       - hello      - Hello
+2025-09-19 21:38:17,529 - DEBUG      - MainThread - thread enumerate -> name=MainThread ident=8737267904 native_id=2030633
+2025-09-19 21:38:17,529 - DEBUG      - MainThread - thread enumerate -> name=worker ident=6116110336 native_id=2030636
+2025-09-19 21:38:17,529 - DEBUG      - MainThread - thread enumerate -> name=counter ident=6132936704 native_id=2030638
+2025-09-19 21:38:17,529 - DEBUG      - MainThread - thread enumerate -> name=hello ident=6149763072 native_id=2030640
+2025-09-19 21:38:17,529 - INFO       - MainThread - Program started.
+2025-09-19 21:38:17,557 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=1
+2025-09-19 21:38:17,557 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=2
+2025-09-19 21:38:17,557 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=3
+2025-09-19 21:38:17,557 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=4
+2025-09-19 21:38:20,534 - INFO       - counter    - Counter: 1.1
+2025-09-19 21:38:23,539 - INFO       - counter    - Counter: 2.1
+2025-09-19 21:38:26,544 - INFO       - counter    - Counter: 3.1
+2025-09-19 21:38:27,534 - INFO       - hello      - Hello
+2025-09-19 21:38:29,405 - INFO       - MainThread - Exit command received.
+2025-09-19 21:38:51,801 - INFO       - worker     - Worker thread started.
+2025-09-19 21:38:51,801 - INFO       - counter    - Counter worker started.
+2025-09-19 21:38:51,801 - INFO       - hello      - Hello worker started.
+2025-09-19 21:38:51,801 - DEBUG      - MainThread - thread enumerate -> name=MainThread ident=8737267904 native_id=2031204
+2025-09-19 21:38:51,801 - INFO       - counter    - Counter: 1
+2025-09-19 21:38:51,801 - INFO       - hello      - Hello
+2025-09-19 21:38:51,801 - DEBUG      - MainThread - thread enumerate -> name=worker ident=6176534528 native_id=2031205
+2025-09-19 21:38:51,801 - DEBUG      - MainThread - thread enumerate -> name=counter ident=6193360896 native_id=2031207
+2025-09-19 21:38:51,801 - DEBUG      - MainThread - thread enumerate -> name=hello ident=6210187264 native_id=2031209
+2025-09-19 21:38:51,802 - INFO       - MainThread - Program started.
+2025-09-19 21:38:51,828 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=1
+2025-09-19 21:38:51,828 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=2
+2025-09-19 21:38:51,828 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=3
+2025-09-19 21:38:51,828 - DEBUG      - MainThread - [thread-name-resolver] Unmatched psutil tid=4
+2025-09-19 21:38:51,906 - INFO       - counter    - Counter: 2
+2025-09-19 21:38:52,012 - INFO       - counter    - Counter: 3
+2025-09-19 21:38:52,117 - INFO       - counter    - Counter: 4
+2025-09-19 21:38:52,222 - INFO       - counter    - Counter: 5
+2025-09-19 21:38:52,329 - INFO       - counter    - Counter: 6
+2025-09-19 21:38:52,434 - INFO       - counter    - Counter: 7
+2025-09-19 21:38:52,545 - INFO       - counter    - Counter: 8
+2025-09-19 21:38:52,656 - INFO       - counter    - Counter: 9
+2025-09-19 21:38:52,761 - INFO       - counter    - Counter: 10
+2025-09-19 21:38:52,862 - INFO       - counter    - Counter: 11
+2025-09-19 21:38:52,967 - INFO       - counter    - Counter: 12
+2025-09-19 21:38:53,073 - INFO       - counter    - Counter: 13
+2025-09-19 21:38:53,178 - INFO       - counter    - Counter: 14
+2025-09-19 21:38:53,289 - INFO       - counter    - Counter: 15
+2025-09-19 21:38:53,397 - INFO       - counter    - Counter: 16
+2025-09-19 21:38:53,509 - INFO       - counter    - Counter: 17
+2025-09-19 21:38:53,620 - INFO       - counter    - Counter: 18
+2025-09-19 21:38:53,725 - INFO       - counter    - Counter: 19
+2025-09-19 21:38:53,826 - INFO       - counter    - Counter: 20
+2025-09-19 21:38:53,932 - INFO       - counter    - Counter: 21
+2025-09-19 21:38:54,037 - INFO       - counter    - Counter: 22
+2025-09-19 21:38:54,142 - INFO       - counter    - Counter: 23
+2025-09-19 21:38:54,250 - INFO       - counter    - Counter: 24
+2025-09-19 21:38:54,358 - INFO       - counter    - Counter: 25
+2025-09-19 21:38:54,469 - INFO       - counter    - Counter: 26
+2025-09-19 21:38:54,580 - INFO       - counter    - Counter: 27
+2025-09-19 21:38:54,685 - INFO       - counter    - Counter: 28
+2025-09-19 21:38:54,791 - INFO       - counter    - Counter: 29
+2025-09-19 21:38:54,896 - INFO       - counter    - Counter: 30
+2025-09-19 21:38:55,001 - INFO       - counter    - Counter: 31
+2025-09-19 21:38:55,106 - INFO       - counter    - Counter: 32
+2025-09-19 21:38:55,217 - INFO       - counter    - Counter: 33
+2025-09-19 21:38:55,323 - INFO       - counter    - Counter: 34
+2025-09-19 21:38:55,434 - INFO       - counter    - Counter: 35
+2025-09-19 21:38:55,546 - INFO       - counter    - Counter: 36
+2025-09-19 21:38:55,651 - INFO       - counter    - Counter: 37
+2025-09-19 21:38:55,756 - INFO       - counter    - Counter: 38
+2025-09-19 21:38:55,862 - INFO       - counter    - Counter: 39
+2025-09-19 21:38:55,963 - INFO       - counter    - Counter: 40
+2025-09-19 21:38:56,068 - INFO       - counter    - Counter: 41
+2025-09-19 21:38:56,176 - INFO       - counter    - Counter: 42
+2025-09-19 21:38:56,288 - INFO       - counter    - Counter: 43
+2025-09-19 21:38:56,398 - INFO       - counter    - Counter: 44
+2025-09-19 21:38:56,510 - INFO       - counter    - Counter: 45
+2025-09-19 21:38:56,615 - INFO       - counter    - Counter: 46
+2025-09-19 21:38:56,716 - INFO       - counter    - Counter: 47
+2025-09-19 21:38:56,821 - INFO       - counter    - Counter: 48
+2025-09-19 21:38:56,924 - INFO       - counter    - Counter: 49
+2025-09-19 21:38:57,030 - INFO       - counter    - Counter: 50
+2025-09-19 21:38:57,138 - INFO       - counter    - Counter: 51
+2025-09-19 21:38:57,246 - INFO       - counter    - Counter: 52
+2025-09-19 21:38:57,357 - INFO       - counter    - Counter: 53
+2025-09-19 21:38:57,468 - INFO       - counter    - Counter: 54
+2025-09-19 21:38:57,569 - INFO       - counter    - Counter: 55
+2025-09-19 21:38:57,672 - INFO       - counter    - Counter: 56
+2025-09-19 21:38:57,778 - INFO       - counter    - Counter: 57
+2025-09-19 21:38:57,883 - INFO       - counter    - Counter: 58
+2025-09-19 21:38:57,988 - INFO       - counter    - Counter: 59
+2025-09-19 21:38:58,096 - INFO       - counter    - Counter: 60
+2025-09-19 21:38:58,205 - INFO       - counter    - Counter: 61
+2025-09-19 21:38:58,316 - INFO       - counter    - Counter: 62
+2025-09-19 21:38:58,428 - INFO       - counter    - Counter: 63
+2025-09-19 21:38:58,533 - INFO       - counter    - Counter: 64
+2025-09-19 21:38:58,638 - INFO       - counter    - Counter: 65
+2025-09-19 21:38:58,744 - INFO       - counter    - Counter: 66
+2025-09-19 21:38:58,849 - INFO       - counter    - Counter: 67
+2025-09-19 21:38:58,954 - INFO       - counter    - Counter: 68
+2025-09-19 21:38:59,062 - INFO       - counter    - Counter: 69
+2025-09-19 21:38:59,169 - INFO       - counter    - Counter: 70
+2025-09-19 21:38:59,281 - INFO       - counter    - Counter: 71
+2025-09-19 21:38:59,392 - INFO       - counter    - Counter: 72
+2025-09-19 21:38:59,497 - INFO       - counter    - Counter: 73
+2025-09-19 21:38:59,603 - INFO       - counter    - Counter: 74
+2025-09-19 21:38:59,708 - INFO       - counter    - Counter: 75
+2025-09-19 21:38:59,810 - INFO       - counter    - Counter: 76
+2025-09-19 21:38:59,916 - INFO       - counter    - Counter: 77
+2025-09-19 21:39:00,022 - INFO       - counter    - Counter: 78
+2025-09-19 21:39:00,134 - INFO       - counter    - Counter: 79
+2025-09-19 21:39:00,239 - INFO       - counter    - Counter: 80
+2025-09-19 21:39:00,344 - INFO       - counter    - Counter: 81
+2025-09-19 21:39:00,449 - INFO       - counter    - Counter: 82
+2025-09-19 21:39:00,554 - INFO       - counter    - Counter: 83
+2025-09-19 21:39:00,660 - INFO       - counter    - Counter: 84
+2025-09-19 21:39:00,766 - INFO       - counter    - Counter: 85
+2025-09-19 21:39:00,871 - INFO       - counter    - Counter: 86
+2025-09-19 21:39:00,982 - INFO       - counter    - Counter: 87
+2025-09-19 21:39:01,093 - INFO       - counter    - Counter: 88
+2025-09-19 21:39:01,199 - INFO       - counter    - Counter: 89
+2025-09-19 21:39:01,304 - INFO       - counter    - Counter: 90
+2025-09-19 21:39:01,409 - INFO       - counter    - Counter: 91
+2025-09-19 21:39:01,513 - INFO       - counter    - Counter: 92
+2025-09-19 21:39:01,618 - INFO       - counter    - Counter: 93
+2025-09-19 21:39:01,723 - INFO       - counter    - Counter: 94
+2025-09-19 21:39:01,806 - INFO       - hello      - Hello
+2025-09-19 21:39:01,828 - INFO       - counter    - Counter: 95
+2025-09-19 21:39:01,938 - INFO       - counter    - Counter: 96
+2025-09-19 21:39:02,050 - INFO       - counter    - Counter: 97
+2025-09-19 21:39:02,155 - INFO       - counter    - Counter: 98
+2025-09-19 21:39:02,260 - INFO       - counter    - Counter: 99
+2025-09-19 21:39:02,365 - INFO       - counter    - Counter: 100
+2025-09-19 21:39:02,471 - INFO       - counter    - Counter: 101
+2025-09-19 21:39:02,576 - INFO       - counter    - Counter: 102
+2025-09-19 21:39:02,683 - INFO       - counter    - Counter: 103
+2025-09-19 21:39:02,788 - INFO       - counter    - Counter: 104
+2025-09-19 21:39:02,898 - INFO       - counter    - Counter: 105
+2025-09-19 21:39:03,009 - INFO       - counter    - Counter: 106
+2025-09-19 21:39:03,114 - INFO       - counter    - Counter: 107
+2025-09-19 21:39:03,216 - INFO       - counter    - Counter: 108
+2025-09-19 21:39:03,321 - INFO       - counter    - Counter: 109
+2025-09-19 21:39:03,426 - INFO       - counter    - Counter: 110
+2025-09-19 21:39:03,531 - INFO       - counter    - Counter: 111
+2025-09-19 21:39:03,643 - INFO       - counter    - Counter: 112
+2025-09-19 21:39:03,750 - INFO       - counter    - Counter: 113
+2025-09-19 21:39:03,859 - INFO       - counter    - Counter: 114
+2025-09-19 21:39:03,970 - INFO       - counter    - Counter: 115
+2025-09-19 21:39:04,075 - INFO       - counter    - Counter: 116
+2025-09-19 21:39:04,181 - INFO       - counter    - Counter: 117
+2025-09-19 21:39:04,286 - INFO       - counter    - Counter: 118
+2025-09-19 21:39:04,391 - INFO       - counter    - Counter: 119
+2025-09-19 21:39:04,496 - INFO       - counter    - Counter: 120
+2025-09-19 21:39:04,598 - INFO       - counter    - Counter: 121
+2025-09-19 21:39:04,704 - INFO       - counter    - Counter: 122
+2025-09-19 21:39:04,815 - INFO       - counter    - Counter: 123
+2025-09-19 21:39:04,926 - INFO       - counter    - Counter: 124
+2025-09-19 21:39:05,031 - INFO       - counter    - Counter: 125
+2025-09-19 21:39:05,135 - INFO       - counter    - Counter: 126
+2025-09-19 21:39:05,240 - INFO       - counter    - Counter: 127
+2025-09-19 21:39:05,345 - INFO       - counter    - Counter: 128
+2025-09-19 21:39:05,450 - INFO       - counter    - Counter: 129
+2025-09-19 21:39:05,557 - INFO       - counter    - Counter: 130
+2025-09-19 21:39:05,669 - INFO       - counter    - Counter: 131
+2025-09-19 21:39:05,774 - INFO       - counter    - Counter: 132
+2025-09-19 21:39:05,879 - INFO       - counter    - Counter: 133
+2025-09-19 21:39:05,985 - INFO       - counter    - Counter: 134
+2025-09-19 21:39:06,087 - INFO       - counter    - Counter: 135
+2025-09-19 21:39:06,191 - INFO       - counter    - Counter: 136
+2025-09-19 21:39:06,295 - INFO       - counter    - Counter: 137
+2025-09-19 21:39:06,396 - INFO       - counter    - Counter: 138
+2025-09-19 21:39:06,502 - INFO       - counter    - Counter: 139
+2025-09-19 21:39:06,611 - INFO       - counter    - Counter: 140
+2025-09-19 21:39:06,716 - INFO       - counter    - Counter: 141
+2025-09-19 21:39:06,817 - INFO       - counter    - Counter: 142
+2025-09-19 21:39:06,922 - INFO       - counter    - Counter: 143
+2025-09-19 21:39:07,028 - INFO       - counter    - Counter: 144
+2025-09-19 21:39:07,133 - INFO       - counter    - Counter: 145
+2025-09-19 21:39:07,244 - INFO       - counter    - Counter: 146
+2025-09-19 21:39:07,356 - INFO       - counter    - Counter: 147
+2025-09-19 21:39:07,467 - INFO       - counter    - Counter: 148
+2025-09-19 21:39:07,579 - INFO       - counter    - Counter: 149
+2025-09-19 21:39:07,684 - INFO       - counter    - Counter: 150
+2025-09-19 21:39:07,795 - INFO       - counter    - Counter: 151
+2025-09-19 21:39:07,906 - INFO       - counter    - Counter: 152
+2025-09-19 21:39:08,011 - INFO       - counter    - Counter: 153
+2025-09-19 21:39:08,116 - INFO       - counter    - Counter: 154
+2025-09-19 21:39:08,222 - INFO       - counter    - Counter: 155
+2025-09-19 21:39:08,327 - INFO       - counter    - Counter: 156
+2025-09-19 21:39:08,432 - INFO       - counter    - Counter: 157
+2025-09-19 21:39:08,538 - INFO       - counter    - Counter: 158
+2025-09-19 21:39:08,538 - INFO       - MainThread - Exit command received.
