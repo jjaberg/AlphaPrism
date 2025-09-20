@@ -29,7 +29,7 @@ def setup_logger(messages_list):
     )
 
     # File output
-    fh = logging.FileHandler("./logs/program.log", mode="a")
+    fh = logging.FileHandler(f"./logs/program_1.log", mode="a")
     fh.setFormatter(fmt)
     logger.addHandler(fh)
 
@@ -73,31 +73,41 @@ def resolve_thread_name_from_tid(tid, cache, logger=None):
     return f"tid-{tid}"
 
 
-def start_named_thread(target, name, *targs, **tkwargs):
-    """Create, name, start, and register a thread by native_id (or ident)."""
-    t = threading.Thread(target=target, args=targs, kwargs=tkwargs, name=name, daemon=True)
-    t.start()
+def start_named_thread(target_or_thread, name=None, *targs, **tkwargs):
+    """Start a thread and register its OS id. Accepts either:
+       - a callable target function + args/kwargs, or
+       - an existing threading.Thread (or subclass) instance.
+    """
+    if isinstance(target_or_thread, threading.Thread):
+        t = target_or_thread
+        # Only override name if provided
+        if name is not None:
+            try:
+                t.name = name
+            except Exception:
+                pass
+        t.start()
+    else:
+        t = threading.Thread(target=target_or_thread, args=targs, kwargs=tkwargs, name=name, daemon=True)
+        t.start()
 
-    def _register_id(th=t, nm=name):
+    def _register_id(th=t, nm=t.name if getattr(t, "name", None) else name):
         # wait until the thread has OS identifiers
         for _ in range(1000):  # up to ~10s
             nid = getattr(th, "native_id", None)
             if nid is not None:
-                thread_name_registry[nid] = nm
+                thread_name_registry[nid] = nm or "thread"
                 # also cache ident as a fallback mapping
                 if th.ident is not None:
-                    thread_name_registry[th.ident] = nm
+                    thread_name_registry[th.ident] = nm or "thread"
                 return
             time.sleep(0.01)
         # fallback: record ident only
         if th.ident is not None:
-            thread_name_registry[th.ident] = nm
+            thread_name_registry[th.ident] = nm or "thread"
 
     threading.Thread(target=_register_id, daemon=True).start()
     return t
-
-
-
 def worker_thread(cmd_queue, storage_list, logger):
     logger.info("Worker thread started.")
     while True:
@@ -244,18 +254,34 @@ def main(stdscr):
     main_tid = getattr(threading.current_thread(), "native_id", None) or threading.get_ident()
     thread_name_registry[main_tid] = "main"
 
-    cfg = SubredditIngestConfig(
+    cfg_wsb = SubredditIngestConfig(
         subreddit="wallstreetbets",
-        limit=500,
-        listing="top",
+        limit=1,
+        listing="new",
         time_filter="week",
         stream_after=True,
-        hot_refresh_interval=60,
-        hot_refresh_count=100,
+        hot_refresh_interval=6,
+        hot_refresh_count=1,
+        heartbeat_interval=10,
         name="WSB-Top-Week"
     )
 
-    rsi_worker = start_named_thread(SubredditIngestor(cfg, logger=logger), 'wsb')
+    wsb_worker = start_named_thread(SubredditIngestor(cfg_wsb, logger=logger, daemon=False), 'wallstreetbets')
+
+    cfg_sid = SubredditIngestConfig(
+        subreddit="SpaceInvestorsDaily",
+        limit=1,
+        listing="new",
+        time_filter="week",
+        stream_after=True,
+        hot_refresh_interval=6,
+        hot_refresh_count=1,
+        heartbeat_interval=10,
+        name="SID-Top-Week"
+    )
+
+    sid_worker = start_named_thread(SubredditIngestor(cfg_sid, logger=logger, daemon=False), 'spaceinvestorysdaily')
+
     worker = start_named_thread(worker_thread, "worker", cmd_queue, storage_list, logger)
     #counter = start_named_thread(counter_worker, "counter", logger)
     #hello = start_named_thread(hello_worker, "hello", logger)

@@ -24,6 +24,7 @@ class SubredditIngestConfig:
         hot_refresh_interval: int = 60,
         hot_refresh_count: int = 100,
         sleep_between_items: float = 0.2,
+        heartbeat_interval: int = 30,
         name: Optional[str] = None,
     ):
         self.subreddit = subreddit
@@ -34,8 +35,8 @@ class SubredditIngestConfig:
         self.hot_refresh_interval = hot_refresh_interval
         self.hot_refresh_count = hot_refresh_count
         self.sleep_between_items = sleep_between_items
+        self.heartbeat_interval = heartbeat_interval
         self.name = name or f"SubredditIngestor-{subreddit}-{listing}"
-
 
 class SubredditIngestor(threading.Thread):
     """
@@ -65,9 +66,15 @@ class SubredditIngestor(threading.Thread):
         # Logger
         self._log = logger or logging.getLogger(f"{__name__}.{self.name}")
 
+        # Heartbeat state
+        self._last_heartbeat = 0.0
+        self._processed_total = 0
+        self._snapshots_inserted = 0
+        self._snapshots_deduped = 0
+
         # SQL
         self._UPSERT_SUBMISSION_SQL = """
-        MERGE dbo.submissions AS target
+        MERGE reddit.submissions AS target
         USING (VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)) AS src
               (id, subreddit, author, created_utc, is_self, url, permalink, first_seen_utc, last_seen_utc,
                title, selftext, score, upvote_ratio, num_comments, edited, link_flair_text,
@@ -102,12 +109,12 @@ class SubredditIngestor(threading.Thread):
                     src.distinguished, src.locked, src.stickied);
         """
         self._INSERT_SNAPSHOT_IF_NEW_SQL = """
-        INSERT INTO dbo.submission_snapshots
+        INSERT INTO reddit.submission_snapshots
         (submission_id, captured_utc, title, selftext, score, upvote_ratio, num_comments,
          edited, link_flair_text, removed_by_category, distinguished, locked, stickied, content_hash)
         SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
         WHERE NOT EXISTS (
-            SELECT 1 FROM dbo.submission_snapshots
+            SELECT 1 FROM reddit.submission_snapshots
             WHERE submission_id = ? AND content_hash = ?
         );
         """
@@ -123,13 +130,30 @@ class SubredditIngestor(threading.Thread):
             self.config.subreddit, self.config.listing, self.config.limit, self.config.stream_after
         )
         try:
-            self._reddit = self._reddit_factory()
-            self._conn = self._conn_factory()
+            # Robust startup: retry connecting to Reddit/MSSQL before giving up
+            backoff = 1.0
+            while not self._stop_event.is_set():
+                try:
+                    self._reddit = self._reddit_factory()
+                    self._conn = self._conn_factory()
+                    break
+                except Exception:
+                    self._log.exception("Startup dependency error (retrying in %.1fs)", backoff)
+                    time.sleep(backoff)
+                    backoff = min(backoff * 2, 30)
+
+            if self._reddit is None or self._conn is None:
+                self._log.error("Startup aborted due to stop request before dependencies ready")
+                return
+
             self._log.debug("Dependencies ready (praw + MSSQL connection established)")
 
             self._initial_ingest()
 
+            self._log.info("Initial ingest complete; stream_after=%s", self.config.stream_after)
+
             if self.config.stream_after and not self._stop_event.is_set():
+                self._log.info("Dispatching into stream loop…")
                 self._stream_loop()
 
         except Exception:
@@ -143,7 +167,6 @@ class SubredditIngestor(threading.Thread):
                 self._log.exception("Error while closing DB connection")
             self._log.info("Worker %s exited", self.name)
 
-    # ---- factories ----
     @staticmethod
     def _default_reddit_factory() -> praw.Reddit:
         load_dotenv()
@@ -173,17 +196,23 @@ class SubredditIngestor(threading.Thread):
             if count % 50 == 0:
                 self._log.debug("Initial ingest progress: %d/%d", count, self.config.limit)
             time.sleep(self.config.sleep_between_items)
+            self._maybe_heartbeat()
         self._log.info("Initial ingest done: %d items processed", count)
 
     def _stream_loop(self):
         sub = self._reddit.subreddit(self.config.subreddit)
-        stream = sub.stream.submissions(skip_existing=True)
+        # Non-blocking stream so we can keep doing heartbeats and hot refreshes
+        stream = sub.stream.submissions(skip_existing=True, pause_after=0)
         last_hot = 0.0
         self._log.info("Entering stream loop for r/%s", self.config.subreddit)
+        self._log.debug("Stream handle ready (skip_existing=True, pause_after=0)")
 
         while not self._stop_event.is_set():
+            self._maybe_heartbeat()
             now = time.time()
-            if now - last_hot > self.config.hot_refresh_interval:
+
+            # Periodic hot refresh (score/comment drift)
+            if now - last_hot >= self.config.hot_refresh_interval:
                 try:
                     self._log.debug("Hot refresh: top %d", self.config.hot_refresh_count)
                     for submission in sub.hot(limit=self.config.hot_refresh_count):
@@ -194,16 +223,24 @@ class SubredditIngestor(threading.Thread):
                 except Exception:
                     self._log.exception("Error during hot refresh")
                 finally:
-                    last_hot = now
+                    last_hot = 0.0
 
+            # Drain any new items from the stream; yields None when caught up
+            got_any = False
             try:
-                submission = next(stream)
-                self._process_submission(submission)
-            except StopIteration:
-                time.sleep(0.5)
+                for submission in stream:
+                    if submission is None:
+                        break  # no new items right now
+                    got_any = True
+                    self._process_submission(submission)
             except Exception:
-                self._log.exception("Stream error; retrying shortly")
-                time.sleep(3.0)
+                self._log.exception("Stream error; continuing")
+                time.sleep(1.0)
+
+            if not got_any:
+                # avoid a tight loop when idle
+                time.sleep(0.5)
+
 
     def _iter_listing(self, sub) -> Iterable:
         l = self.config.listing.lower()
@@ -234,6 +271,25 @@ class SubredditIngestor(threading.Thread):
                 return sub.best(limit=limit)
         raise RuntimeError("unreachable")
 
+    def _maybe_heartbeat(self):
+        now = time.time()
+        if self._last_heartbeat == 0.0:
+            self._last_heartbeat = now
+            return
+        if now - self._last_heartbeat >= self.config.heartbeat_interval:
+            self._log.debug(
+                "HB r/%s listing=%s processed_total=%d snapshots: +%d (deduped %d)",
+                self.config.subreddit,
+                self.config.listing,
+                self._processed_total,
+                self._snapshots_inserted,
+                self._snapshots_deduped,
+            )
+            # reset per-interval counters; keep totals
+            self._snapshots_inserted = 0
+            self._snapshots_deduped = 0
+            self._last_heartbeat = now
+    
     # ---- persistence ----
     @staticmethod
     def _now_utc_int() -> int:
@@ -279,6 +335,12 @@ class SubredditIngestor(threading.Thread):
         d = self._row_from_submission(s)
         self._upsert_submission(d)
         inserted = self._add_snapshot(s.id, d)
+        self._processed_total += 1
+        if inserted:
+            self._snapshots_inserted += 1
+        else:
+            self._snapshots_deduped += 1
+        self._maybe_heartbeat()
         self._log.debug(
             "Upserted %s (score=%s, comments=%s)%s",
             d["id"], d["score"], d["num_comments"],

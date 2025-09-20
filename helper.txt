@@ -1,0 +1,3 @@
+running conda if not working
+source ~/miniconda3/etc/profile.d/conda.sh
+
