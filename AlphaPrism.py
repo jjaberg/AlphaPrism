@@ -1,6 +1,7 @@
 import curses, time, psutil, threading, queue, logging, os
 from collections import defaultdict
 from collections import deque
+from reddit.subreddit_ingestor import SubredditIngestConfig, SubredditIngestor
 
 thread_name_registry = {}
 
@@ -243,9 +244,21 @@ def main(stdscr):
     main_tid = getattr(threading.current_thread(), "native_id", None) or threading.get_ident()
     thread_name_registry[main_tid] = "main"
 
+    cfg = SubredditIngestConfig(
+        subreddit="wallstreetbets",
+        limit=500,
+        listing="top",
+        time_filter="week",
+        stream_after=True,
+        hot_refresh_interval=60,
+        hot_refresh_count=100,
+        name="WSB-Top-Week"
+    )
+
+    rsi_worker = start_named_thread(SubredditIngestor(cfg, logger=logger), 'wsb')
     worker = start_named_thread(worker_thread, "worker", cmd_queue, storage_list, logger)
-    counter = start_named_thread(counter_worker, "counter", logger)
-    hello = start_named_thread(hello_worker, "hello", logger)
+    #counter = start_named_thread(counter_worker, "counter", logger)
+    #hello = start_named_thread(hello_worker, "hello", logger)
 
     for t in threading.enumerate():
         logger.debug(f"thread enumerate -> name={t.name} ident={t.ident} native_id={getattr(t, 'native_id', None)}")
